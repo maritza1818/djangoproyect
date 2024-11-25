@@ -3,6 +3,6 @@ from .models import Project
 
 class ProjectSerializer (serializers.ModelSerializer):
     class Meta:
-        models = Project
+        model = Project
         fields = ('id','title', 'description', 'technology' , 'created_at')
-        read_only_fields = ('create_at',)
+        read_only_fields = ('created_at',)
