@@ -17,9 +17,12 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from projects import views
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # Puedes cambiar esta ruta si necesitas una página principal diferente
-    path('', include('projects.urls')),  # No debería estar duplicada con la ruta vacía anterior
+    path('admin/', admin.site.urls),  # Ruta del panel de administración
+       path('', views.home, name = 'home'),  # Página principal dentro del proyecto
+    # Otras rutas específicas del proyecto
+    path('signup/', views.signup ,name = 'signup') # Página principal con "Hello world!!!"
 ]

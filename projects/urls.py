@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
     path('', views.helloworld, name='home'),  # Página principal dentro del proyecto
     # Otras rutas específicas del proyecto
+    path('signup/', views.helloworld)
 ]
 
 router = routers.DefaultRouter()
