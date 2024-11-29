@@ -22,8 +22,9 @@ from projects import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),  # Ruta del panel de administración
-       path('', views.home, name = 'home'),  # Página principal dentro del proyecto
+    path('', views.home, name='home'),  # Página principal dentro del proyecto
     # Otras rutas específicas del proyecto
-    path('signup/', views.signup ,name = 'signup'), # Página principal con "Hello world!!!"
-    path('tasks/', views.tasks ,name = 'tasks'),
+    # Página principal con "Hello world!!!"
+    path('tasks/', views.tasks, name='tasks'),
+    path('signup/', views.signup, name='signup'),
 ]
