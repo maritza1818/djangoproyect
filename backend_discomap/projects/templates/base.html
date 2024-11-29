@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django CRUD Application</title>
+
+    <!-- Estilos CSS básicos para la navegación -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        nav {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+ 
+    <!-- Barra de navegación -->
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+        <li><a href="./tasks.html">Tasks</a></li>
+            <li><a href="./signup.html">Sign Up</a></li>
+            <li><a href="./logout.html">Logout</a></li>
+        </ul>
+    </nav>
+
+        <!-- Aquí se inyectará el contenido de las páginas que hereden esta base -->
+        {% block content %}
+        {% endblock %}
+
+    
+</body>
+</html>
