@@ -1,17 +1,6 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
-class Project(models.Model):
-    title = models.CharField(max_length=200)
-    description = models.TextField()
-    technology = models.CharField(max_length=200)
-    created_at = models.DateTimeField(auto_now_add=True)
-    fecha_vencimiento = models.DateTimeField()
-    completada = models.BooleanField(default=False)
-    discoteca = models.ForeignKey('Discoteca', on_delete=models.CASCADE, related_name='projects')
-
-    def __str__(self):
-        return self.title
 
 #########################
 
@@ -28,3 +17,14 @@ class Discoteca(models.Model):
 
     def __str__(self):
         return self.nombre
+class Project(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    datecompleted = models.DateTimeField(null=True)
+    important = models.BooleanField(default=False)
+    disco = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects')
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
