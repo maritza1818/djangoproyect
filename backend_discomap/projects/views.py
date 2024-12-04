@@ -50,11 +50,11 @@ def create_task(request):
             'form': ProjectForm
         })
     else:
-        print(request.POST)
-        return render(request, 'create_task.html', {
-            'form': ProjectForm
-        })
-
+        form = ProjectForm(request.POST)
+        new_task = form.save(commit = False)
+        new_task.user = request.user
+        new_task.save()
+        return redirect('tasks')
 
 def signout(request):
     logout(request)
