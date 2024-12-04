@@ -1,4 +1,13 @@
 from django.contrib import admin
-from .models import Project
-# Register your models here.
-admin.site.register(Project)
+from .models import Discoteca, Project
+
+class DiscotecaAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'direccion', 'horario_apertura', 'horario_cierre', 'usuario')  # Agregado 'usuario'
+    
+
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ('title', 'description', 'created_at', 'important', 'discoteca')  # Agregado 'discoteca'
+    readonly_fields = ("created_at",)
+
+admin.site.register(Discoteca, DiscotecaAdmin)
+admin.site.register(Project, ProjectAdmin)
