@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Discotecas</h1>
+<ul>
+    {% for discoteca in discotecas %}
+    <li>
+        <h2>{{ discoteca.nombre }}</h2>
+        <p>Horario: {{ discoteca.horario }}</p>
+        <p>Aforo: {{ discoteca.aforo }}</p>
+        <p>Stock de Bebidas: {{ discoteca.stock_bebidas }}</p>
+        <p>Calificación: {{ discoteca.calificacion }}</p>
+    </li>
+    {% empty %}
+    <li>No hay discotecas registradas aún.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

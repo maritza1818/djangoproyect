@@ -55,20 +55,23 @@
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/tasks">Tasks</a></li>
+            <li><a href="{% url 'tasks' %}">Tasks</a></li>
+            <li><a href="{% url 'discotecas' %}">Ver Discotecas</a></li>
+            <li><a href="{% url 'create_discoteca' %}">Crear Discoteca</a></li>
             {% if user.is_authenticated %}
-            <li><a href="/logout">Logout</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
             {% else %}
-            <li><a href="/signup">Sign Up</a></li>
-            <li><a href="/signin">Signin</a></li>
+                <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                <li><a href="{% url 'signin' %}">Signin</a></li>
             {% endif %}
         </ul>
     </nav>
 
     <!-- Aquí se inyectará el contenido de las páginas que hereden esta base -->
-    {% block content %}
-    {% endblock %}
-
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
 
 </body>
 
