@@ -131,3 +131,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',  # Agrega aquí el dominio de tu frontend (Angular)
 ]
+# settings.py
+LOGIN_URL = 'signin'  # Aquí pones el nombre de la URL que usas para el login, que en este caso es 'signin'

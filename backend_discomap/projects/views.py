@@ -7,6 +7,7 @@ from django.db import IntegrityError
 from .forms import ProjectForm, DiscotecaForm
 from .models import Project
 from .models import Discoteca 
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -41,7 +42,7 @@ def signup(request):
             "error": 'Password do not match'
         })
 
-
+@login_required
 def tasks(request):
     tasks = Project.objects.filter(user=request.user)
     return render(request, 'tasks.html', {'tasks': tasks})
@@ -78,9 +79,9 @@ def create_discoteca(request):
             form = DiscotecaForm(request.POST)
             if form.is_valid():
                 new_discoteca = form.save(commit=False)
-                new_discoteca.user = request.user  # Asigna el usuario actual
+                new_discoteca.user = request.user 
                 new_discoteca.save()
-                return redirect('discotecas')  # Redirige a la lista de discotecas
+                return redirect('discotecas') 
         except ValueError:
             return render(request, 'create_discoteca.html', {
                 'form': DiscotecaForm(),
