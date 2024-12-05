@@ -87,7 +87,10 @@ def create_discoteca(request):
                 'form': DiscotecaForm(),
                 'error': 'Por favor, provee datos válidos'
             })
-
+def discoteca_detail(request, discoteca_id):
+    discoteca = Discoteca.objects.get(pk=discoteca_id)
+    
+    return render (request,'discoteca_detail.html', {'discoteca': discoteca})
 
 def signout(request):
     logout(request)

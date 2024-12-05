@@ -29,6 +29,7 @@ urlpatterns = [
     path('tasks/create', views.create_task, name='create_task'),
     path('discotecas/', views.discotecas, name='discotecas'),
     path('discotecas/create', views.create_discoteca, name='create_discoteca'),
+    path('discotecas/<int:discoteca_id>', views.discoteca_detail, name='discoteca_detail'),
     path('signup/', views.signup, name='signup'),
     path('logout/', views.signout, name='logout'),
     path('signin/', views.signin, name='signin'),
