@@ -4,7 +4,9 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
-from .forms import ProjectForm
+from .forms import ProjectForm, DiscotecaForm
+from .models import Project
+from .models import Discoteca 
 # Create your views here.
 
 
@@ -41,8 +43,8 @@ def signup(request):
 
 
 def tasks(request):
-    return render(request, 'tasks.html')
-
+    tasks = Project.objects.filter(user=request.user)
+    return render(request, 'tasks.html', {'tasks': tasks})
 
 def create_task(request):
     if request.method == 'GET':
@@ -50,11 +52,41 @@ def create_task(request):
             'form': ProjectForm
         })
     else:
-        form = ProjectForm(request.POST)
-        new_task = form.save(commit = False)
-        new_task.user = request.user
-        new_task.save()
-        return redirect('tasks')
+        try:
+            form = ProjectForm(request.POST)
+            new_task = form.save(commit=False)
+            new_task.user = request.user
+            new_task.save()
+            return redirect('tasks')
+        except ValueError:
+            return render(request, 'create_task.html', {
+                'form': ProjectForm,
+                'error': 'Por favor provee un dato válido'
+            })
+
+def discotecas(request):
+    discotecas = Discoteca.objects.all()
+    return render(request, 'discotecas.html', {'discotecas': discotecas})
+
+def create_discoteca(request):
+    if request.method == 'GET':
+        return render(request, 'create_discoteca.html', {
+            'form': DiscotecaForm()
+        })
+    else:
+        try:
+            form = DiscotecaForm(request.POST)
+            if form.is_valid():
+                new_discoteca = form.save(commit=False)
+                new_discoteca.user = request.user  # Asigna el usuario actual
+                new_discoteca.save()
+                return redirect('discotecas')  # Redirige a la lista de discotecas
+        except ValueError:
+            return render(request, 'create_discoteca.html', {
+                'form': DiscotecaForm(),
+                'error': 'Por favor, provee datos válidos'
+            })
+
 
 def signout(request):
     logout(request)
@@ -76,4 +108,5 @@ def signin(request):
             })
         else:
             login(request, user)
-            return redirect('tasks')
+            next_url = request.GET.get('next', 'tasks') 
+            return redirect(next_url)

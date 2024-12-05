@@ -1,7 +1,19 @@
-
 {% extends 'base.html' %}
 {% block content %}
 <!-- Aquí se inyectará el contenido de las páginas que hereden esta base -->
 <h1>tasks</h1>
- 
+<!----arreglo de tasks |para cada elemento en ese areglo esot empeza a recorrerlo -->
+<ul>
+    {% for task in tasks %}
+    <li>
+        <h1>{{task.title}}</h1>
+        <p>{{task.description}}</p>
+        <p>{{task.discoteca}}</p>
+        <p>{{task.user.username}}</p>
+        <p>{{task.important}}</p>
+    </li>
+
+
+    {% endfor %}
+</ul>
 {% endblock %}
