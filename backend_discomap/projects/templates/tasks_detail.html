@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 <!-- Aquí se inyectará el contenido de las páginas que hereden esta base -->
-    <h1>{{discoteca.nombre}}</h1>
-    {{eror}}
+    <h1>{{task.title}}</h1>
+    {{error}}
     <form method="POST">
         {% csrf_token %}
         {{form.as_p}}

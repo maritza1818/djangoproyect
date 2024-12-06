@@ -27,6 +27,8 @@ urlpatterns = [
     # Página principal con "Hello world!!!"
     path('tasks/', views.tasks, name='tasks'),
     path('tasks/create', views.create_task, name='create_task'),
+    path('tasks/<int:task_id>', views.task_detail, name='task_detail'),
+
     path('discotecas/', views.discotecas, name='discotecas'),
     path('discotecas/create', views.create_discoteca, name='create_discoteca'),
     path('discotecas/<int:discoteca_id>', views.discoteca_detail, name='discoteca_detail'),

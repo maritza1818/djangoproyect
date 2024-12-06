@@ -4,11 +4,14 @@
 <ul>
     {% for discoteca in discotecas %}
     <li>
+        <a href="{% url 'discoteca_detail' discoteca.id %}">
+
         <h2>{{ discoteca.nombre }}</h2>
         <p>Horario: {{ discoteca.horario }}</p>
         <p>Aforo: {{ discoteca.aforo }}</p>
         <p>Stock de Bebidas: {{ discoteca.stock_bebidas }}</p>
         <p>Calificación: {{ discoteca.calificacion }}</p>
+        </a>
     </li>
     {% empty %}
     <li>No hay discotecas registradas aún.</li>
