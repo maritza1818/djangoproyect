@@ -1,19 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
-<!-- Aquí se inyectará el contenido de las páginas que hereden esta base -->
-<h1>tasks</h1>
-<!----arreglo de tasks |para cada elemento en ese areglo esot empeza a recorrerlo -->
+<h1>Tareas</h1>
 <ul>
     {% for task in tasks %}
     <li>
-        <h1>{{task.title}}</h1>
-        <p>{{task.description}}</p>
-        <p>{{task.discoteca}}</p>
-        <p>{{task.user.username}}</p>
-        <p>{{task.important}}</p>
+        <a href="{% url 'task_detail' task.id %}">
+            <h2>{{ task.title }}</h2>
+            <p>{{ task.description }}</p>
+            <p>{{ task.user.username }}</p>
+            <p>{{ task.important|yesno:"Importante,No importante" }}</p>
+        </a>
     </li>
-
-
+    {% empty %}
+    <li>No hay tareas registradas aún.</li>
     {% endfor %}
 </ul>
 {% endblock %}
