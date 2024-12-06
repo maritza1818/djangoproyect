@@ -2,12 +2,30 @@
 {% block content %}
 <!-- Aquí se inyectará el contenido de las páginas que hereden esta base -->
     <h1>{{task.title}}</h1>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
     {{error}}
+    
     <form method="POST">
         {% csrf_token %}
         {{form.as_p}}
         <button>
             Actualizar
+        </button>
+    </form>
+    <form action = "{% url 'complete_task' task.id %}" method ="POST">
+        {% csrf_token %}
+        <button>
+            Completada
         </button>
     </form>
 {% endblock %}

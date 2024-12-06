@@ -8,6 +8,9 @@ from .forms import ProjectForm, DiscotecaForm
 from .models import Project
 from .models import Discoteca
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.contrib import messages
+
 
 # Create your views here.
 
@@ -84,8 +87,13 @@ def task_detail(request, task_id):
             return render(request, 'tasks_detail.html', {'task': task, 'form': form,
             'error': 'Por favor, provee datos válidos'
             })
-
-
+def complete_task(request, task_id):
+    task = get_object_or_404(Project, pk=task_id, user=request.user)
+    if request.method == 'POST':
+        task.datecompleted = timezone.now()
+        task.save()
+        messages.success(request, '¡La tarea ha sido marcada como completada!')
+        return redirect('tasks') 
 def discotecas(request):
     discotecas = Discoteca.objects.all()
     return render(request, 'discotecas.html', {'discotecas': discotecas})
@@ -125,7 +133,14 @@ def discoteca_detail(request, discoteca_id):
         except ValueError:
             return render(request, 'discoteca_detail.html', {'discoteca': discoteca, 'form': form,
             'error': "Error de actualizar la tarea"})
+def complete_discoteca(request, discoteca_id):
+    discoteca = get_object_or_404(Discoteca, pk=discoteca_id, user=request.user)
+    if request.method == 'POST':
+        discoteca.datecompleted = timezone.now()
+        discoteca.save()
+        messages.success(request, '¡La discoteca ha sido marcada como completada!')
 
+        return redirect('discotecas') 
 
 def signout(request):
     logout(request)
