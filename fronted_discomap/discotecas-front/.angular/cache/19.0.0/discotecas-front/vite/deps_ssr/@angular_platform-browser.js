@@ -38,8 +38,8 @@ import {
   withI18nSupport,
   withIncrementalHydration,
   withNoHttpTransferCache
-} from "./chunk-446EBR7X.js";
-import "./chunk-M56QPFQT.js";
+} from "./chunk-24QCPKIE.js";
+import "./chunk-FCQ24L56.js";
 import "./chunk-YHCV7DAQ.js";
 export {
   BrowserModule,
