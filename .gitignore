@@ -7,18 +7,11 @@ __pycache__/
 *.pyo
 *.pyd
 *.log
-*/migrations/*.py
+
 !*/migrations/__init__.py
 staticfiles/
 .vscode/
 .idea/
-
-# Ignorar la base de datos SQLite
-backend_discomap/db.sqlite3
-
-# Ignorar los archivos compilados de Python
-backend_discomap/projects/__pycache__/
-backend_discomap/projects/__pycache__/*.pyc
 
 # Angular
 node_modules/
@@ -28,3 +21,6 @@ build/
 package-lock.json
 yarn.lock
 .cache/
+# Ignorar caché de Angular
+.angular/cache/
+dist/

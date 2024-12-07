@@ -2,21 +2,26 @@ from rest_framework import serializers
 from .models import Project, Discoteca
 from django.contrib.auth.models import User
 
-class DiscotecaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Discoteca
-        fields = ['id', 'nombre', 'direccion', 'horario_apertura', 'horario_cierre', 'aforo_maximo', 'stock_bebidas', 'calificacion', 'descripcion', 'created_at']
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']  # Puedes añadir más campos si lo deseas
+        fields = ['id', 'username', 'email']
+
+class DiscotecaSerializer(serializers.ModelSerializer):
+    user = UserSerializer()  
+
+    class Meta:
+        model = Discoteca
+        fields = ['id', 'nombre', 'direccion', 'horario_apertura', 'horario_cierre', 
+                  'aforo_maximo', 'stock_bebidas', 'calificacion', 'descripcion', 
+                  'created_at', 'user']
 
 class ProjectSerializer(serializers.ModelSerializer):
-    disco = DiscotecaSerializer()  # Utiliza un serializer anidado para la relación con Discoteca
-    user = UserSerializer()  # Utiliza un serializer anidado para la relación con el usuario
+    discoteca = DiscotecaSerializer() 
+    user = UserSerializer()  
 
     class Meta:
         model = Project
-        fields = ['id', 'title', 'description', 'datecompleted', 'created_at', 'disco', 'user', 'important']
-        read_only_fields = ('created_at',)  # Es correcto que 'created_at' sea solo de lectura
+        fields = ['id', 'title', 'description', 'datecompleted', 
+                  'created_at', 'discoteca', 'user', 'important']
+        read_only_fields = ('created_at',)
