@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 //import { AboutComponent } from './about/about.component';
 //import { ContactComponent } from './contact/contact.component';
 //import { DiscotecasComponent } from './discotecas/discotecas.component';
-import { HomeComponent } from './home/home.component'; // Importar el componente
-import { TasksListComponent } from './tasks-list/tasks-list.component';
+import { HomeComponent } from './pages/home/home.component'; // Importar el componente
+import { TasksListComponent } from './pages/tasks-list/tasks-list.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },  // Página principal

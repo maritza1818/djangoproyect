@@ -1,7 +1,7 @@
 // app.component.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { TasksListComponent } from './tasks-list/tasks-list.component';
+import { TasksListComponent } from './pages/tasks-list/tasks-list.component';
 
 @Component({
   selector: 'app-root',
@@ -15,4 +15,5 @@ export class AppComponent {
   goToTasks() {
     this.router.navigate(['/tasks']);
   }
+  
 }

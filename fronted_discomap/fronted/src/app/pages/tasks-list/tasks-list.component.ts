@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common'; // Para usar ngIf, ngFor, etc.
 import { HttpClientModule } from '@angular/common/http'; // Importa HttpClientModule
 import { Component, OnInit } from '@angular/core';
-import { TasksService } from '../core/services/tasks.service'; // Asegúrate de importar tu servicio
+import { TasksService } from '../../core/services/tasks.service'; // Asegúrate de importar tu servicio
 
 
 
