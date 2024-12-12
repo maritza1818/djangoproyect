@@ -1,0 +1,27 @@
+nav {
+    background-color: #1a1a1a;
+    padding: 10px 20px;
+    color: white;
+  }
+  
+  ul {
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+  }
+  
+  li {
+    padding: 5px;
+  }
+  
+  a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  a.active {
+    font-weight: bold;
+    color: #ffcc00;
+  }
+  
