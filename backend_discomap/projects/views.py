@@ -148,14 +148,7 @@ def create_discoteca(request):
                 'form': DiscotecaForm(),
                 'error': 'Por favor, provee datos válidos'
             })
-class DiscotecaCreateView(APIView):
-    def post(self, request):
-        serializer = DiscotecaSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 def discoteca_detail(request, discoteca_id):
     if request.method == 'GET':
         discoteca = get_object_or_404(Discoteca, pk=discoteca_id, user=request.user)

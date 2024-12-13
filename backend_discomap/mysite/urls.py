@@ -2,20 +2,18 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from projects import views
-from projects.api import ProjectViewSet
+from projects.api import ProjectViewSet, DiscotecaViewSet
 from django.conf import settings
 from django.conf.urls.static import static
-from projects.views import DiscotecaCreateView
+from projects.views import discotecas_json,tasks_json
 
 router = routers.DefaultRouter()
 
 router.register(r'projects', ProjectViewSet, basename='projects')
-
+router.register(r'discotecas', DiscotecaViewSet, basename='discotecas')
 urlpatterns = [
-    path('api/discotecas/', DiscotecaCreateView.as_view(),
-         name='create-discoteca-api'),
-    path('api/discotecas/', views.discotecas_json, name='discotecas_json'),
-    path('api/tasks/', views.tasks_json, name='tasks_json'),
+
+    path('api/', include(router.urls)),
 
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),

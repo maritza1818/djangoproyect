@@ -10,6 +10,6 @@ urlpatterns = [
 ]
 
 router = routers.DefaultRouter()
-router.register('api/projects', ProjectViewSet, 'projects')
+router.register('api/tasks', ProjectViewSet, 'tasks')
 
 urlpatterns = router.urls  

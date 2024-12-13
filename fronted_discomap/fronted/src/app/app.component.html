@@ -1,14 +1,11 @@
 <!-- app.component.html -->
-
-<!-- Barra de navegación o enlaces para navegar -->
 <nav>
-  <a routerLink="/tasks">Ver Tareas</a>
-  <a routerLink="/discotecas">Ver Discotecas</a>
+  <button (click)="goToTasks()">Ver Tareas</button>
+  <button (click)="goToDiscotecas()">Ver Discotecas</button>
 </nav>
 
 <!-- Aquí se carga el componente correspondiente según la ruta -->
-<router-outlet></router-outlet> <!-- Este es el lugar donde los componentes se cargarán dependiendo de la ruta -->
-<!-- app.component.html -->
-<div>
-  <app-tasks-list></app-tasks-list>  <!-- Usar el selector del componente aquí -->
-</div>
+<router-outlet></router-outlet>
+
+<!-- Agregar el selector del componente DiscotecaListComponent -->
+<app-discoteca-list></app-discoteca-list>  <!-- Asegúrate de agregarlo aquí -->
