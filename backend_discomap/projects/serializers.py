@@ -14,7 +14,7 @@ class DiscotecaSerializer(serializers.ModelSerializer):
         model = Discoteca
         fields = ['id', 'nombre', 'direccion', 'horario_apertura', 'horario_cierre', 
                   'aforo_maximo', 'stock_bebidas', 'calificacion', 'descripcion', 
-                  'created_at', 'user']
+                  'created_at', 'user', 'imagen']
 
 class ProjectSerializer(serializers.ModelSerializer):
     discoteca = DiscotecaSerializer() 

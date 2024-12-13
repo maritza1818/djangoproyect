@@ -1,10 +1,14 @@
-<!-- Enlace para navegar a la lista de tareas -->
+<!-- app.component.html -->
+
+<!-- Barra de navegación o enlaces para navegar -->
 <nav>
-  <a routerLink="/tasks">Ver Proyectos</a>
+  <a routerLink="/tasks">Ver Tareas</a>
+  <a routerLink="/discotecas">Ver Discotecas</a>
 </nav>
 
-<!-- Aquí se carga el componente según la ruta 
-
-<app-header></app-header> <!-- Aquí se muestra la barra de navegación -->
-<!-- <router-outlet></router-outlet> Aquí se cargan las vistas según la ruta -->
-<app-tasks-list></app-tasks-list>
+<!-- Aquí se carga el componente correspondiente según la ruta -->
+<router-outlet></router-outlet> <!-- Este es el lugar donde los componentes se cargarán dependiendo de la ruta -->
+<!-- app.component.html -->
+<div>
+  <app-tasks-list></app-tasks-list>  <!-- Usar el selector del componente aquí -->
+</div>

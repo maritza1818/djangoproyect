@@ -1,21 +1,22 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-//import { AboutComponent } from './about/about.component';
-//import { ContactComponent } from './contact/contact.component';
-//import { DiscotecasComponent } from './discotecas/discotecas.component';
-import { HomeComponent } from './pages/home/home.component'; // Importar el componente
+import { Routes } from '@angular/router';
+
+// Importar componentes de páginas
+import { AuthRedirectComponent } from './auth-redirect/auth-redirect.component';
+import { DiscotecaDetailsComponent } from './pages/discoteca-details/discoteca-details.component';
+import { DiscotecaListComponent } from './pages/discoteca-list/discoteca-list.component';
+import { HomeComponent } from './pages/home/home.component';
+import { LoginComponent } from './pages/login/login.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { RegisterComponent } from './pages/register/register.component';
 import { TasksListComponent } from './pages/tasks-list/tasks-list.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },  // Página principal
-  { path: 'tasks', component: TasksListComponent },
-//{ path: 'discotecas', component: DiscotecasComponent },
- // { path: 'about', component: AboutComponent },
-//  { path: 'contact', component: ContactComponent }
+  { path: '', component: HomeComponent }, // Página principal
+  { path: 'discotecas', component: DiscotecaListComponent }, // Lista de discotecas
+  { path: 'discotecas/:id', component: DiscotecaDetailsComponent }, // Detalles de una discoteca específica
+  { path: 'tasks', component: TasksListComponent }, // Tareas (ejemplo)
+  { path: 'login', component: LoginComponent }, // Login de usuario
+  { path: 'register', component: RegisterComponent }, // Registro de usuario
+  { path: 'auth-redirect', component: AuthRedirectComponent }, // Redirección después de autenticación
+  { path: '**', component: NotFoundComponent } // Página 404 para rutas no existentes
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }

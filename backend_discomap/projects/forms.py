@@ -1,15 +1,15 @@
 from django import forms
 from .models import Discoteca, Project
 
-# Formulario para Discoteca
 class DiscotecaForm(forms.ModelForm):
     class Meta:
         model = Discoteca
-        fields = ['nombre', 'direccion', 'horario_apertura', 'horario_cierre', 'aforo_maximo', 'stock_bebidas', 'calificacion', 'descripcion']
+        fields = ['nombre', 'direccion', 'horario_apertura', 'horario_cierre', 'aforo_maximo', 'stock_bebidas', 'calificacion', 'descripcion', 'imagen']
         widgets = {
             'descripcion': forms.Textarea(attrs={'cols': 80, 'rows': 5}),
             'horario_apertura': forms.TimeInput(attrs={'type': 'time'}),
             'horario_cierre': forms.TimeInput(attrs={'type': 'time'}),
+                'imagen': forms.ClearableFileInput(attrs={'multiple': False}),
         }
 
     def clean_aforo_maximo(self):
@@ -25,7 +25,6 @@ class DiscotecaForm(forms.ModelForm):
         return calificacion
 
 
-# Formulario para Project
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project

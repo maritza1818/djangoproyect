@@ -1,1 +1,18 @@
-<p>card-discoteca works!</p>
+<div class="card bg-base-100 shadow-lg hover:shadow-2xl transition duration-300">
+    <figure>
+      <!-- Asegúrate de que 'discoteca.imagen' esté bien configurado -->
+      <img [src]="discoteca.imagen" alt="Imagen de la discoteca" class="object-cover h-40 w-full" />
+    </figure>
+    <div class="card-body">
+      <h2 class="card-title">{{ discoteca.nombre }}</h2>
+      <p>🕒 Horario: {{ discoteca.horario_apertura }} - {{ discoteca.horario_cierre }}</p>
+      <p>📍 Dirección: {{ discoteca.direccion }}</p> 
+      <p>🍾 Stock de Bebidas: {{ discoteca.stock_bebidas }}</p>
+      <p>👥 Aforo Máximo: {{ discoteca.aforo_maximo }}</p>
+      <p>⭐ Calificación: {{ discoteca.calificacion }}</p> <!-- Añadí una calificación, si es necesario -->
+      <div class="card-actions justify-end">
+        <button class="btn btn-primary">Ver Detalles</button>
+      </div>
+    </div>
+  </div>
+  
