@@ -1,8 +1,18 @@
-<div class="flex justify-center my-6">
-  <input
-    type="text"
-    placeholder="Buscar discotecas..."
-    class="input input-bordered w-full max-w-md"
-  />
-  <button class="btn btn-primary ml-2">Buscar</button>
+<div class="flex items-center justify-center w-full">
+  <div class="relative w-full max-w-lg">
+    <!-- Input de búsqueda -->
+    <input
+      type="text"
+      placeholder="Buscar..."
+      class="input input-bordered w-full pr-16 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition duration-300"
+      (input)="onInput($event)" 
+    />
+    <!-- Botón de búsqueda -->
+    <button
+      class="btn btn-primary absolute right-0 top-0 rounded-l-none"
+      (click)="onSearchClick()" 
+    >
+      Buscar
+    </button>
+  </div>
 </div>
