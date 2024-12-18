@@ -1,11 +1,14 @@
-<!-- app.component.html -->
+<header>
+  <app-header></app-header>
+</header>
 <nav>
   <button (click)="goToTasks()">Ver Tareas</button>
   <button (click)="goToDiscotecas()">Ver Discotecas</button>
 </nav>
-
-<!-- Aquí se carga el componente correspondiente según la ruta -->
+<app-search-bar></app-search-bar>
 <router-outlet></router-outlet>
-
-<!-- Agregar el selector del componente DiscotecaListComponent -->
+<app-footer></app-footer>
+<app-tasks-list></app-tasks-list>
 <app-discoteca-list></app-discoteca-list>  <!-- Asegúrate de agregarlo aquí -->
+
+

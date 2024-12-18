@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,20 +14,14 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
   username: string = '';
-  password1: string = '';
-  password2: string = '';
+  password: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
-    if (this.password1 !== this.password2) {
-      alert('Las contraseñas no coinciden. Por favor, inténtelo de nuevo.');
-      return;
-    }
+    console.log('Datos enviados:', { username: this.username, password: this.password });
 
-    console.log('Datos enviados:', { username: this.username, password1: this.password1 });
-
-    this.authService.register(this.username, this.password1, this.password2).subscribe(
+    this.authService.register(this.username, this.password).subscribe(
       (response: any) => {
         alert('Registro exitoso. Ahora puede iniciar sesión.');
         this.router.navigate(['/login']);  // Redirige al login después del registro

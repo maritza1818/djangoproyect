@@ -1,18 +1,27 @@
 <div class="card bg-base-100 shadow-lg hover:shadow-2xl transition duration-300">
-    <figure>
-      <!-- Asegúrate de que 'discoteca.imagen' esté bien configurado -->
-      <img [src]="discoteca.imagen" alt="Imagen de la discoteca" class="object-cover h-40 w-full" />
-    </figure>
-    <div class="card-body">
-      <h2 class="card-title">{{ discoteca.nombre }}</h2>
-      <p>🕒 Horario: {{ discoteca.horario_apertura }} - {{ discoteca.horario_cierre }}</p>
-      <p>📍 Dirección: {{ discoteca.direccion }}</p> 
-      <p>🍾 Stock de Bebidas: {{ discoteca.stock_bebidas }}</p>
-      <p>👥 Aforo Máximo: {{ discoteca.aforo_maximo }}</p>
-      <p>⭐ Calificación: {{ discoteca.calificacion }}</p> <!-- Añadí una calificación, si es necesario -->
-      <div class="card-actions justify-end">
-        <button class="btn btn-primary">Ver Detalles</button>
-      </div>
+  <figure>
+    <img [src]="discoteca.imagen" alt="Imagen de la discoteca" class="object-cover h-40 w-full" />
+  </figure>
+  <div class="card-body">
+    <h2 class="card-title">{{ discoteca.nombre }}</h2>
+    <p>🕒 Horario: {{ discoteca.horario_apertura }} - {{ discoteca.horario_cierre }}</p>
+    <p>📍 Dirección: {{ discoteca.direccion }}</p>
+    <p>📞 Teléfono: {{ discoteca.telefono }}</p>
+    <p>🍾 Stock de Bebidas: {{ discoteca.stock_bebidas }}</p>
+    <p>👥 Aforo Máximo: {{ discoteca.aforo_maximo }}</p>
+    <p>⭐ Calificación: {{ discoteca.calificacion }}</p>
+    <p>💵 Precio de Entrada: {{ discoteca.precio_entrada }}</p>
+    <p>🌍 Ubicación: Latitud {{ discoteca.latitud }}, Longitud {{ discoteca.longitud }}</p>
+    <p>🔧 Servicios: {{ discoteca.servicios }}</p>
+    <p>📢 Promociones: {{ discoteca.promociones }}</p>
+    <p>📅 Fecha de Creación: {{ discoteca.created_at }}</p>
+    <p>🔗 Redes Sociales: 
+      <span *ngFor="let redSocial of discoteca.redes_sociales | keyvalue">
+        <a [href]="redSocial.value" target="_blank">{{ redSocial.key }}</a>
+      </span>
+    </p>
+    <div class="card-actions justify-end">
+      <button class="btn btn-primary">Ver Detalles</button>
     </div>
   </div>
-  
+</div>

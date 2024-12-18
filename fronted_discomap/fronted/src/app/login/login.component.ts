@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { Observer } from 'rxjs';
 
@@ -20,13 +20,11 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
-    console.log('Datos enviados:', { username: this.username, password: this.password });  // Verificar los datos enviados
+    console.log('Datos enviados:', { username: this.username, password: this.password });
 
     const loginObserver: Observer<any> = {
       next: (response) => {
-        console.log('Respuesta del servidor:', response);  // Verificar la respuesta del servidor
         localStorage.setItem('token', response.token);  // Guarda el token en el almacenamiento local
-        console.log('Token guardado y redirigiendo a la página principal');
         this.router.navigate(['/']);  // Redirige a la página principal
       },
       error: (error) => {

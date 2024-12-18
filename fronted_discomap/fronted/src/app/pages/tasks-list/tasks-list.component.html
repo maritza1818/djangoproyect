@@ -1,19 +1,29 @@
-<!-- tasks-list.component.html -->
-<div *ngIf="tasks.length > 0; else noData">
-    <ul>
-      <li *ngFor="let task of tasks">
-        <!-- Mostrar el título y la descripción de la tarea -->
-        <strong>{{ task.title }}</strong> 
-        <p>{{ task.description }}</p>
-        
-        <!-- Mostrar detalles adicionales si lo deseas -->
-        <small><strong>Fecha completada:</strong> {{ task.datecompleted | date }}</small>
-        <p><strong>Discoteca:</strong> {{ task.discoteca }} - {{ task.discoteca }}</p>
-        <p><strong>Usuario:</strong> {{ task.username }}</p>
-      </li>
-    </ul>
+<div class="container mx-auto p-6">
+  <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">
+    Tareas Pendientes de la Discoteca
+  </h1>
+
+  <!-- Mostrar tareas si hay elementos -->
+  <div *ngIf="tasks.length > 0; else noTasks" 
+       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <!-- Iterar sobre la lista de tareas -->
+    <app-card-tasks 
+      *ngFor="let task of tasks" 
+      [task]="task">
+    </app-card-tasks>
   </div>
-  <ng-template #noData>
-    <p>No se encontraron tareas.</p>
+
+  <!-- Plantilla si no hay tareas -->
+  <ng-template #noTasks>
+    <div class="flex justify-center items-center mt-4">
+      <div class="alert alert-info shadow-lg">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 w-6 h-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m0 0h-1m1 0v-4m-4 8h12a8 8 0 10-12 0z"/>
+          </svg>
+          <span>No hay tareas disponibles en este momento.</span>
+        </div>
+      </div>
+    </div>
   </ng-template>
-  
+</div>

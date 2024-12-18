@@ -1,20 +1,23 @@
-import { CommonModule } from '@angular/common'; // Para usar ngIf, ngFor, etc.
-import { HttpClientModule } from '@angular/common/http'; // Importa HttpClientModule
 import { Component, OnInit } from '@angular/core';
-import { TasksService } from '../../core/services/tasks.service'; // Asegúrate de importar tu servicio
-
-
+import { CommonModule } from '@angular/common';
+import { CardTasksComponent } from '../../pages/card-tasks/card-tasks.component';
+import { TasksService } from '../../core/services/tasks.service';
+import { Project } from '../../models/projects.model';
+import { of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tasks-list',
   templateUrl: './tasks-list.component.html',
   styleUrls: ['./tasks-list.component.css'],
-  standalone: true,  // Hacemos el componente standalone
-  imports: [HttpClientModule, CommonModule]  // Importamos HttpClientModule y CommonModule
+  standalone: true,
+  imports: [
+    CommonModule,
+    CardTasksComponent
+  ]
 })
 export class TasksListComponent implements OnInit {
-
-  tasks: any[] = [];  // Array donde almacenamos las tareas
+  tasks: Project[] = [];
 
   constructor(private tasksService: TasksService) {}
 
@@ -23,14 +26,18 @@ export class TasksListComponent implements OnInit {
   }
 
   loadTasks(): void {
-    this.tasksService.getTasks().subscribe(
-      (data) => {
-        console.log('Tareas obtenidas:', data);  // Verifica los datos que llegan
-        this.tasks = data.tasks;
-      },
-      (error) => {
+    this.tasksService.getTasks().pipe(
+      map(data => {
+        console.log('Datos recibidos de la API:', data); // Verificar aquí
+        return data;
+      }),
+      catchError(error => {
         console.error('Error al obtener las tareas', error);
-      }
-    );
+        return of([]);
+      })
+    ).subscribe(data => {
+      this.tasks = data;
+      console.log('Tareas asignadas:', this.tasks); // Verificar aquí
+    });
   }
 }
