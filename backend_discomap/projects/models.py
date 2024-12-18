@@ -6,8 +6,10 @@ class CustomUser(AbstractUser):
     groups = models.ManyToManyField(Group, related_name='custom_user_set', blank=True)
     user_permissions = models.ManyToManyField(Permission, related_name='custom_user_permissions_set', blank=True)
 
+
+
 class UserProfile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)  # Cambia CustomUser por User
     birth_date = models.DateField(null=True, blank=True)
     gender = models.CharField(max_length=10, choices=(('Male', 'Male'), ('Female', 'Female')), null=True, blank=True)
     favorite_drinks = models.TextField(null=True, blank=True)
@@ -19,42 +21,38 @@ class UserProfile(models.Model):
     email_notifications = models.BooleanField(default=True)
     push_notifications = models.BooleanField(default=True)
     favorite_discos = models.ManyToManyField('Discoteca', related_name='favored_by', blank=True)
-    attended_events = models.ManyToManyField('Evento', related_name='attended_by', blank=True)  # Cambiado a 'Evento'
+    attended_events = models.ManyToManyField('Evento', related_name='attended_by', blank=True)  
     favorite_music = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.user.username
 
 
+    
 class Discoteca(models.Model):
+    # Otros campos existentes...
     nombre = models.CharField(max_length=200)
     direccion = models.CharField(max_length=300)
     horario_apertura = models.TimeField()
     horario_cierre = models.TimeField()
     aforo_maximo = models.IntegerField()
     stock_bebidas = models.TextField()
-    calificacion = models.DecimalField(
-        max_digits=3, decimal_places=2)  # Ej: 4.75
+    calificacion = models.DecimalField(max_digits=3, decimal_places=2)  # Ej: 4.75
     descripcion = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    imagen = models.URLField(null=True, blank=True)
-    telefono = models.CharField(
-        max_length=15, null=True, blank=True)  
+    imagen = models.ImageField(upload_to='discotecas/')    
+    telefono = models.CharField(max_length=15, null=True, blank=True)  
     redes_sociales = models.JSONField(blank=True, null=True)
-    precio_entrada = models.DecimalField(
-        max_digits=6, decimal_places=2, null=True, blank=True) 
-    latitud = models.DecimalField(
-        max_digits=9, decimal_places=6, null=True, blank=True) 
-    longitud = models.DecimalField(
-        max_digits=9, decimal_places=6, null=True, blank=True)
-    servicios = models.TextField(
-        blank=True, null=True) 
-    estado_abierta = models.BooleanField(
-        default=True)
-    promociones = models.TextField(
-        blank=True, null=True) 
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='discotecas')
+    precio_entrada = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True) 
+    latitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True) 
+    longitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    servicios = models.TextField(blank=True, null=True) 
+    estado_abierta = models.BooleanField(default=True)
+    promociones = models.TextField(blank=True, null=True) 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='discotecas')
+
+    # Relación de ManyToMany para los "likes"
+    likes = models.ManyToManyField(User, related_name='liked_discotecas', blank=True)
 
     def promedio_calificaciones(self):
         comentarios = self.comentarios.all()
@@ -63,6 +61,9 @@ class Discoteca(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+
 
 
 class Project(models.Model):

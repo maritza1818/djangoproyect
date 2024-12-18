@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Project, Discoteca, Reserva, Comentario, Evento, Favorito, UserProfile
 from django.contrib.auth.models import User
 
+
 class UserSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
@@ -33,6 +34,11 @@ class DiscotecaSerializer(serializers.ModelSerializer):
                   'aforo_maximo', 'stock_bebidas', 'calificacion', 'descripcion', 
                   'created_at', 'user', 'imagen', 'telefono', 'redes_sociales', 
                   'precio_entrada', 'latitud', 'longitud', 'servicios', 'estado_abierta']
+    def get_imagen_url(self, obj):
+        if obj.imagen:
+            return obj.imagen.url  # Devuelve la URL de la imagen si existe
+        else:
+            return None  # Devuelve None si no existe una imagen
 
 class ProjectSerializer(serializers.ModelSerializer):
     discoteca = DiscotecaSerializer() 
@@ -79,7 +85,8 @@ class FavoritoSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'discoteca', 'created_at']
         read_only_fields = ('created_at',)
 
+
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = '__all__'
+        fields = '__all__'  # Esto debe estar correctamente indentado

@@ -1,0 +1,170 @@
+/* General Styles */
+.profile-picture-container img {
+    width: 100%;        /* La imagen ocupa todo el ancho del contenedor */
+    height: auto;       /* Mantiene la relación de aspecto */
+    max-width: 150px;   /* Tamaño máximo de 150px */
+    border-radius: 50%;
+    border: 4px solid #3498db;
+    object-fit: cover;  /* Asegura que la imagen se ajuste sin deformarse */
+    margin-bottom: 15px;
+}
+
+.profile-picture-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Estilos Generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Container */
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+}
+
+h1 {
+    font-size: 2rem;
+    text-align: center;
+    color: #34495e;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(1);
+}
+
+/* Form Styling */
+form {
+    margin-top: 20px;
+    display: grid;
+    gap: 20px;
+}
+
+label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+input,
+textarea,
+select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+input[type="date"],
+select {
+    max-width: 320px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Profile Info */
+.profile-info {
+    margin-top: 30px;
+    background-color: #ecf0f1;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.profile-info p {
+    margin: 10px 0;
+    font-size: 1.1rem;
+    color: #34495e;
+}
+
+.profile-info strong {
+    color: #2980b9;
+}
+
+.profile-info hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid #ddd;
+}
+
+/* Button Container */
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.cancel-button {
+    background-color: #e74c3c;
+}
+
+.cancel-button:hover {
+    background-color: #c0392b;
+}
+
+/* Desktop and tablet responsiveness */
+@media (min-width: 768px) {
+    .container {
+        padding: 40px;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    /* Ajustar tamaño de imagen en pantallas pequeñas */
+    .profile-picture-container img {
+        max-width: 60px;   /* Imagen aún más pequeña en dispositivos móviles */
+        height: 60px;      /* Imagen aún más pequeña */
+    }
+}

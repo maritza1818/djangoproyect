@@ -28,12 +28,12 @@ export class TasksListComponent implements OnInit {
   loadTasks(): void {
     this.tasksService.getTasks().pipe(
       map(data => {
-        console.log('Datos recibidos de la API:', data); // Verificar aquí
+        console.log('Tareas obtenidas:', data);
         return data;
       }),
       catchError(error => {
         console.error('Error al obtener las tareas', error);
-        return of([]);
+        return of([]); // Retorna un array vacío en caso de error
       })
     ).subscribe(data => {
       this.tasks = data;

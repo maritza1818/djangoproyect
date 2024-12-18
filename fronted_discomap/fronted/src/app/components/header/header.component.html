@@ -1,16 +1,68 @@
-<header class="navbar bg-gray-900 text-white shadow-lg px-4">
+<header class="navbar bg-gray-900 text-white shadow-lg px-4 sticky top-0 z-50">
   <div class="flex-1">
-    <a class="btn btn-ghost normal-case text-2xl text-primary">Discomap 🎶</a>
+    <a routerLink="/home" class="btn btn-ghost normal-case text-2xl text-primary hover:text-pink-400 transition duration-300 ease-in-out">
+      Discomap 🎶
+    </a>
   </div>
-  <div class="flex-none hidden md:block">
-    <ul class="menu menu-horizontal px-1">
-      <li><a routerLink="/home" class="hover:text-primary">Inicio</a></li>
-      <li><a routerLink="/discotecas" class="hover:text-primary">Discotecas</a></li>
-      <li *ngIf="!(authService.isAuthenticated() | async)"><a routerLink="/login" class="hover:text-primary">Iniciar Sesión</a></li>
-      <li *ngIf="!(authService.isAuthenticated() | async)"><a routerLink="/register" class="hover:text-primary">Registrarse</a></li>
-      <li *ngIf="authService.isAuthenticated() | async"><a routerLink="/favoritos" class="hover:text-primary">Favoritos</a></li>
-      <li *ngIf="authService.isAuthenticated() | async"><a routerLink="/perfil" class="hover:text-primary">Perfil</a></li>
-      <li *ngIf="authService.isAuthenticated() | async"><a (click)="logout()" class="hover:text-primary cursor-pointer">Cerrar Sesión</a></li>
+
+  <!-- Menú principal para dispositivos grandes -->
+  <div class="hidden md:flex flex-none">
+    <ul class="menu menu-horizontal px-1 text-white">
+      <li>
+        <a routerLink="/home" class="hover:text-pink-400 transition duration-300 ease-in-out">Inicio</a>
+      </li>
+      <li>
+        <a routerLink="/discotecas" class="hover:text-pink-400 transition duration-300 ease-in-out">Discotecas</a>
+      </li>
+      <li *ngIf="!(authService.isAuthenticated() | async)">
+        <a routerLink="/login" class="hover:text-pink-400 transition duration-300 ease-in-out">Iniciar Sesión</a>
+      </li>
+      <li *ngIf="!(authService.isAuthenticated() | async)">
+        <a routerLink="/register" class="hover:text-pink-400 transition duration-300 ease-in-out">Registrarse</a>
+      </li>
+      <li *ngIf="authService.isAuthenticated() | async">
+        <a routerLink="/favoritos" class="hover:text-pink-400 transition duration-300 ease-in-out">Favoritos</a>
+      </li>
+      <li *ngIf="authService.isAuthenticated() | async">
+        <a routerLink="/profile" class="hover:text-pink-400 transition duration-300 ease-in-out">Perfil</a>
+      </li>
+      <li *ngIf="authService.isAuthenticated() | async">
+        <a (click)="logout()" class="hover:text-pink-400 cursor-pointer transition duration-300 ease-in-out">
+          Cerrar Sesión
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Menú desplegable para dispositivos pequeños -->
+  <div class="dropdown md:hidden">
+    <label tabindex="0" class="btn btn-ghost text-white hover:text-pink-400">
+      ☰
+    </label>
+    <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 shadow bg-gray-900 rounded-box w-52">
+      <li>
+        <a routerLink="/home" class="hover:text-pink-400 transition duration-300 ease-in-out">Inicio</a>
+      </li>
+      <li>
+        <a routerLink="/discotecas" class="hover:text-pink-400 transition duration-300 ease-in-out">Discotecas</a>
+      </li>
+      <li *ngIf="!(authService.isAuthenticated() | async)">
+        <a routerLink="/login" class="hover:text-pink-400 transition duration-300 ease-in-out">Iniciar Sesión</a>
+      </li>
+      <li *ngIf="!(authService.isAuthenticated() | async)">
+        <a routerLink="/register" class="hover:text-pink-400 transition duration-300 ease-in-out">Registrarse</a>
+      </li>
+      <li *ngIf="authService.isAuthenticated() | async">
+        <a routerLink="/favoritos" class="hover:text-pink-400 transition duration-300 ease-in-out">Favoritos</a>
+      </li>
+      <li *ngIf="authService.isAuthenticated() | async">
+        <a routerLink="/profile" class="hover:text-pink-400 transition duration-300 ease-in-out">Perfil</a>
+      </li>
+      <li *ngIf="authService.isAuthenticated() | async">
+        <a (click)="logout()" class="hover:text-pink-400 cursor-pointer transition duration-300 ease-in-out">
+          Cerrar Sesión
+        </a>
+      </li>
     </ul>
   </div>
 </header>

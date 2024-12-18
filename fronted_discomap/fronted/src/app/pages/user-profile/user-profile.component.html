@@ -1,0 +1,55 @@
+<div *ngIf="userProfile$ | async as userProfile">
+    <h1>{{ userProfile?.user?.username || 'Guest' }}'s Profile</h1>
+  
+    <!-- Contenedor de imagen de perfil con límite de tamaño -->
+    <div class="profile-picture-container">
+      <img [src]="userProfile.profile_picture || 'path/to/default-image.jpg'" alt="Profile Picture">
+    </div>
+  
+    <button *ngIf="!isEditMode" (click)="enableEditMode()">Editar Perfil</button>
+  
+    <form *ngIf="isEditMode" (ngSubmit)="updateUserProfile(userProfile)">
+      <label for="birth_date">Birth Date:</label>
+      <input id="birth_date" [(ngModel)]="userProfile.birth_date" name="birth_date" type="date">
+      
+      <label for="gender">Gender:</label>
+      <select id="gender" [(ngModel)]="userProfile.gender" name="gender" [disabled]="true">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+  
+      <label for="favorite_drinks">Favorite Drinks:</label>
+      <textarea id="favorite_drinks" [(ngModel)]="userProfile.favorite_drinks" name="favorite_drinks"></textarea>
+  
+      <label for="preferred_ambiences">Preferred Ambiences:</label>
+      <textarea id="preferred_ambiences" [(ngModel)]="userProfile.preferred_ambiences" name="preferred_ambiences"></textarea>
+  
+      <label for="personal_phrase">Personal Phrase:</label>
+      <textarea id="personal_phrase" [(ngModel)]="userProfile.personal_phrase" name="personal_phrase"></textarea>
+  
+      <label for="biography">Biography:</label>
+      <textarea id="biography" [(ngModel)]="userProfile.biography" name="biography"></textarea>
+  
+      <label for="favorite_music">Favorite Music:</label>
+      <textarea id="favorite_music" [(ngModel)]="userProfile.favorite_music" name="favorite_music"></textarea>
+  
+      <button type="submit">Update Profile</button>
+      <button type="button" (click)="disableEditMode()">Cancelar</button>
+    </form>
+  
+    <div *ngIf="!isEditMode">
+      <p><strong>Birth Date:</strong> {{ userProfile.birth_date }}</p>
+      <p><strong>Gender:</strong> {{ userProfile.gender }}</p>
+      <p><strong>Favorite Drinks:</strong> {{ userProfile.favorite_drinks }}</p>
+      <p><strong>Preferred Ambiences:</strong> {{ userProfile.preferred_ambiences }}</p>
+      <p><strong>Personal Phrase:</strong> {{ userProfile.personal_phrase }}</p>
+      <p><strong>Biography:</strong> {{ userProfile.biography }}</p>
+      <p><strong>Favorite Music:</strong> {{ userProfile.favorite_music }}</p>
+      <p><strong>User ID:</strong> {{ userProfile.user }}</p>
+      <p><strong>Email Notifications:</strong> {{ userProfile.email_notifications ? 'Enabled' : 'Disabled' }}</p>
+      <p><strong>Push Notifications:</strong> {{ userProfile.push_notifications ? 'Enabled' : 'Disabled' }}</p>
+      <p><strong>Attended Events:</strong> {{ userProfile.attended_events?.length }} events</p>
+      <p><strong>Favorite Discotecas:</strong> {{ userProfile.favorite_discos?.length }} discos</p>
+    </div>
+  </div>
+  

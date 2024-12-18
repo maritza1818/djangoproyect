@@ -5,12 +5,18 @@
     {% for discoteca in discotecas %}
     <li>
         <a href="{% url 'discoteca_detail' discoteca.id %}">
-
         <h2>{{ discoteca.nombre }}</h2>
         <p>Horario: {{ discoteca.horario }}</p>
         <p>Aforo: {{ discoteca.aforo }}</p>
         <p>Stock de Bebidas: {{ discoteca.stock_bebidas }}</p>
         <p>Calificación: {{ discoteca.calificacion }}</p>
+
+        {% if discoteca.imagen %}
+            <img src="{{ discoteca.imagen.url }}" alt="{{ discoteca.nombre }}" width="200">
+        {% else %}
+            <p>No hay imagen disponible</p>
+        {% endif %}
+
         </a>
     </li>
     {% empty %}

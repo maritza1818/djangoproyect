@@ -13,6 +13,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
+from django.conf import settings
 
 
 @api_view(['POST'])
@@ -75,22 +76,23 @@ def signout(request):
 @csrf_exempt
 def discotecas_json(request):
     if request.method == 'GET':
-        discotecas = Discoteca.objects.all()  # Obtiene todas las discotecas
+        discotecas = Discoteca.objects.all()  
         data = []
         for discoteca in discotecas:
+            imagen_url = discoteca.imagen.url if discoteca.imagen else None
             data.append({
                 'id': discoteca.id,
                 'nombre': discoteca.nombre,
                 'direccion': discoteca.direccion,
                 'telefono': discoteca.telefono,
                 'descripcion': discoteca.descripcion,
-                'fecha_creacion': discoteca.created_at.strftime('%Y-%m-%d'),  # Formato de fecha
+                'fecha_creacion': discoteca.created_at.strftime('%Y-%m-%d'),  
                 'horario_apertura': discoteca.horario_apertura.strftime('%H:%M:%S'),
                 'horario_cierre': discoteca.horario_cierre.strftime('%H:%M:%S'),
                 'aforo_maximo': discoteca.aforo_maximo,
                 'stock_bebidas': discoteca.stock_bebidas,
                 'calificacion': float(discoteca.calificacion),
-                'imagen': discoteca.imagen,
+                'imagen': imagen_url,
                 'redes_sociales': json.loads(discoteca.redes_sociales) if discoteca.redes_sociales else {},
                 'precio_entrada': float(discoteca.precio_entrada) if discoteca.precio_entrada else None,
                 'latitud': float(discoteca.latitud) if discoteca.latitud else None,
@@ -226,86 +228,20 @@ def complete_discoteca(request, discoteca_id):
         return redirect('discotecas')
 
 
+@login_required
+def like_discoteca(request, discoteca_id):
+    # Obtener la discoteca por su ID
+    discoteca = get_object_or_404(Discoteca, pk=discoteca_id)
 
+    # Si el usuario ya ha dado "like", lo quitamos (unlike)
+    if request.user in discoteca.likes.all():
+        discoteca.likes.remove(request.user)
+    else:
+        # Si el usuario no ha dado "like", lo agregamos
+        discoteca.likes.add(request.user)
 
-from rest_framework import viewsets
-from .models import Project, Discoteca, Reserva, Comentario, Evento, Favorito
-from .serializers import DiscotecaSerializer, ProjectSerializer, ReservaSerializer, ComentarioSerializer, EventoSerializer, FavoritoSerializer
-
-class DiscotecaViewSet_DRF(viewsets.ModelViewSet):
-    queryset = Discoteca.objects.all()
-    serializer_class = DiscotecaSerializer
-
-class ProjectViewSet_DRF(viewsets.ModelViewSet):
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
-
-class ReservaViewSet_DRF(viewsets.ModelViewSet):
-    queryset = Reserva.objects.all()
-    serializer_class = ReservaSerializer
-
-class ComentarioViewSet_DRF(viewsets.ModelViewSet):
-    queryset = Comentario.objects.all()
-    serializer_class = ComentarioSerializer
-
-class EventoViewSet_DRF(viewsets.ModelViewSet):
-    queryset = Evento.objects.all()
-    serializer_class = EventoSerializer
-
-class FavoritoViewSet_DRF(viewsets.ModelViewSet):
-    queryset = Favorito.objects.all()
-    serializer_class = FavoritoSerializer
+    # Redirigimos a la página de detalles de la discoteca
+    return redirect('discoteca_detail', discoteca_id=discoteca.id)
 
 
 
-from rest_framework import generics
-from .models import Project, Discoteca, Reserva, Comentario, Evento, Favorito
-from .serializers import DiscotecaSerializer, ProjectSerializer, ReservaSerializer, ComentarioSerializer, EventoSerializer, FavoritoSerializer
-
-class DiscotecaListCreateGenericsDRF(generics.ListCreateAPIView):
-    queryset = Discoteca.objects.all()
-    serializer_class = DiscotecaSerializer
-
-class DiscotecaRetrieveUpdateDestroyGenericsDRF(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Discoteca.objects.all()
-    serializer_class = DiscotecaSerializer
-
-class ProjectListCreateGenericsDRF(generics.ListCreateAPIView):
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
-
-class ProjectRetrieveUpdateDestroyGenericsDRF(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
-
-class ReservaListCreateGenericsDRF(generics.ListCreateAPIView):
-    queryset = Reserva.objects.all()
-    serializer_class = ReservaSerializer
-
-class ReservaRetrieveUpdateDestroyGenericsDRF(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Reserva.objects.all()
-    serializer_class = ReservaSerializer
-
-class ComentarioListCreateGenericsDRF(generics.ListCreateAPIView):
-    queryset = Comentario.objects.all()
-    serializer_class = ComentarioSerializer
-
-class ComentarioRetrieveUpdateDestroyGenericsDRF(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Comentario.objects.all()
-    serializer_class = ComentarioSerializer
-
-class EventoListCreateGenericsDRF(generics.ListCreateAPIView):
-    queryset = Evento.objects.all()
-    serializer_class = EventoSerializer
-
-class EventoRetrieveUpdateDestroyGenericsDRF(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Evento.objects.all()
-    serializer_class = EventoSerializer
-
-class FavoritoListCreateGenericsDRF(generics.ListCreateAPIView):
-    queryset = Favorito.objects.all()
-    serializer_class = FavoritoSerializer
-
-class FavoritoRetrieveUpdateDestroyGenericsDRF(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Favorito.objects.all()
-    serializer_class = FavoritoSerializer

@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { FooterComponent } from '../../components/footer/footer.component'; // Asegúrate de importar el FooterComponent
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [FooterComponent], 
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  // Aquí puedes agregar cualquier lógica que necesites en el futuro
+
 }
