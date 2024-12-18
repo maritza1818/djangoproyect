@@ -3,14 +3,16 @@ from django.urls import path, include
 from rest_framework import routers
 from projects import views
 from projects.api import ProjectViewSet, DiscotecaViewSet
+from projects.viewsets import EventoViewSet, UserProfileViewSet  # Importar los nuevos viewsets
 from django.conf import settings
 from django.conf.urls.static import static
 from projects.views import discotecas_json, tasks_json, signin, signup, signout
 
 router = routers.DefaultRouter()
-
 router.register(r'projects', ProjectViewSet, basename='projects')
 router.register(r'discotecas', DiscotecaViewSet, basename='discotecas')
+router.register(r'eventos', EventoViewSet, basename='eventos')  # Registrar EventoViewSet
+router.register(r'perfiles', UserProfileViewSet, basename='perfiles')  # Registrar UserProfileViewSet
 
 urlpatterns = [
     path('api/', include(router.urls)),

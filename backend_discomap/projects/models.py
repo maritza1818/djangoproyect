@@ -1,5 +1,29 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import AbstractUser, Group, Permission
+
+class CustomUser(AbstractUser):
+    groups = models.ManyToManyField(Group, related_name='custom_user_set', blank=True)
+    user_permissions = models.ManyToManyField(Permission, related_name='custom_user_permissions_set', blank=True)
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    birth_date = models.DateField(null=True, blank=True)
+    gender = models.CharField(max_length=10, choices=(('Male', 'Male'), ('Female', 'Female')), null=True, blank=True)
+    favorite_drinks = models.TextField(null=True, blank=True)
+    preferred_ambiences = models.TextField(null=True, blank=True)
+    personal_phrase = models.CharField(max_length=255, null=True, blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+    biography = models.TextField(null=True, blank=True)
+    social_media_links = models.JSONField(default=dict, null=True, blank=True)
+    email_notifications = models.BooleanField(default=True)
+    push_notifications = models.BooleanField(default=True)
+    favorite_discos = models.ManyToManyField('Discoteca', related_name='favored_by', blank=True)
+    attended_events = models.ManyToManyField('Evento', related_name='attended_by', blank=True)  # Cambiado a 'Evento'
+    favorite_music = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
 
 
 class Discoteca(models.Model):
@@ -82,7 +106,6 @@ class Comentario(models.Model):
     def __str__(self):
         return f'{self.user.username} - {self.calificacion}⭐'
 
-
 class Evento(models.Model):
     nombre = models.CharField(max_length=200)
     descripcion = models.TextField()
@@ -91,6 +114,8 @@ class Evento(models.Model):
     hora_fin = models.TimeField()
     discoteca = models.ForeignKey(
         Discoteca, on_delete=models.CASCADE, related_name='eventos')
+    creador = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='eventos')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

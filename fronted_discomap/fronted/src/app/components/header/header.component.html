@@ -6,8 +6,11 @@
     <ul class="menu menu-horizontal px-1">
       <li><a routerLink="/home" class="hover:text-primary">Inicio</a></li>
       <li><a routerLink="/discotecas" class="hover:text-primary">Discotecas</a></li>
-      <li *ngIf="router.url !== '/login'"><a routerLink="/login" class="hover:text-primary">Iniciar Sesión</a></li>
-      <li *ngIf="router.url !== '/register'"><a routerLink="/register" class="hover:text-primary">Registrarse</a></li>
+      <li *ngIf="!(authService.isAuthenticated() | async)"><a routerLink="/login" class="hover:text-primary">Iniciar Sesión</a></li>
+      <li *ngIf="!(authService.isAuthenticated() | async)"><a routerLink="/register" class="hover:text-primary">Registrarse</a></li>
+      <li *ngIf="authService.isAuthenticated() | async"><a routerLink="/favoritos" class="hover:text-primary">Favoritos</a></li>
+      <li *ngIf="authService.isAuthenticated() | async"><a routerLink="/perfil" class="hover:text-primary">Perfil</a></li>
+      <li *ngIf="authService.isAuthenticated() | async"><a (click)="logout()" class="hover:text-primary cursor-pointer">Cerrar Sesión</a></li>
     </ul>
   </div>
 </header>

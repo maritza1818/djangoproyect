@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Project, Discoteca, Reserva, Comentario, Evento, Favorito
+from .models import Project, Discoteca, Reserva, Comentario, Evento, Favorito, UserProfile
 from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
@@ -29,11 +29,10 @@ class DiscotecaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Discoteca
-        fields = ['promociones','id', 'nombre', 'direccion', 'horario_apertura', 'horario_cierre', 
+        fields = ['promociones', 'id', 'nombre', 'direccion', 'horario_apertura', 'horario_cierre', 
                   'aforo_maximo', 'stock_bebidas', 'calificacion', 'descripcion', 
                   'created_at', 'user', 'imagen', 'telefono', 'redes_sociales', 
-                  'precio_entrada', 'latitud', 'longitud', 'servicios', 'estado_abierta'
-                  ]
+                  'precio_entrada', 'latitud', 'longitud', 'servicios', 'estado_abierta']
 
 class ProjectSerializer(serializers.ModelSerializer):
     discoteca = DiscotecaSerializer() 
@@ -64,7 +63,7 @@ class ComentarioSerializer(serializers.ModelSerializer):
         read_only_fields = ('created_at',)
 
 class EventoSerializer(serializers.ModelSerializer):
-    discoteca = DiscotecaSerializer()
+    discoteca = DiscotecaSerializer()  # Esto serializa el campo de clave foránea 'discoteca'
 
     class Meta:
         model = Evento
@@ -79,3 +78,8 @@ class FavoritoSerializer(serializers.ModelSerializer):
         model = Favorito
         fields = ['id', 'user', 'discoteca', 'created_at']
         read_only_fields = ('created_at',)
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = '__all__'

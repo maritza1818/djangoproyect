@@ -1,8 +1,7 @@
 from rest_framework import viewsets, permissions
-from .models import Project, Discoteca
+from .models import Project, Discoteca, Evento, UserProfile
 from django.contrib.auth.models import User
-from .serializers import UserSerializer, DiscotecaSerializer, ProjectSerializer
-
+from .serializers import UserSerializer, DiscotecaSerializer, ProjectSerializer, EventoSerializer, UserProfileSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
 
@@ -23,3 +22,12 @@ class ProjectViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+
+
+class EventoViewSet(viewsets.ModelViewSet):
+    queryset = Evento.objects.all()
+    serializer_class = EventoSerializer
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
