@@ -4,12 +4,12 @@ from .models import Discoteca, Project
 class DiscotecaForm(forms.ModelForm):
     class Meta:
         model = Discoteca
-        fields = ['nombre', 'direccion', 'horario_apertura', 'horario_cierre', 'aforo_maximo', 'stock_bebidas', 'calificacion', 'descripcion', 'imagen']
+        fields = ['nombre', 'direccion', 'horario_apertura', 'horario_cierre', 'aforo_maximo', 'stock_bebidas', 'calificacion', 'descripcion', 'imagen', 'telefono', 'redes_sociales', 'precio_entrada', 'latitud', 'longitud', 'servicios', 'estado_abierta', 'promociones']
         widgets = {
             'descripcion': forms.Textarea(attrs={'cols': 80, 'rows': 5}),
             'horario_apertura': forms.TimeInput(attrs={'type': 'time'}),
             'horario_cierre': forms.TimeInput(attrs={'type': 'time'}),
-                'imagen': forms.ClearableFileInput(attrs={'multiple': False}),
+            'imagen': forms.ClearableFileInput(attrs={'multiple': False}),
         }
 
     def clean_aforo_maximo(self):
@@ -23,6 +23,8 @@ class DiscotecaForm(forms.ModelForm):
         if calificacion < 0 or calificacion > 5:
             raise forms.ValidationError("La calificación debe estar entre 0 y 5.")
         return calificacion
+
+
 
 
 class ProjectForm(forms.ModelForm):

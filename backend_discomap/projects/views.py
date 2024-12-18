@@ -1,3 +1,5 @@
+import json
+import jwt
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -10,10 +12,66 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .serializers import DiscotecaSerializer
+from rest_framework.decorators import api_view
+
+
+@api_view(['POST'])
+def signin(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            token = jwt.encode({'username': username}, 'secret_key', algorithm='HS256')
+            return JsonResponse({'token': token})
+        else:
+            return JsonResponse({'error': 'Username or password is incorrect'}, status=400)
+
+@csrf_exempt
+@api_view(['POST'])
+def signup(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            username = data.get('username')
+            password1 = data.get('password1')
+            password2 = data.get('password2')
+            
+            print(f"Username: {username}, Password1: {password1}, Password2: {password2}")  # Verificar los datos recibidos
+            
+            if password1 != password2:
+                return JsonResponse({'error': 'Passwords do not match'}, status=400)
+            
+            if not username or not password1:
+                return JsonResponse({"error": "Username and password are required"}, status=400)
+            
+            if User.objects.filter(username=username).exists():
+                return JsonResponse({"error": "Username already exists"}, status=400)
+            
+            user = User.objects.create_user(username=username)  # Crear el usuario
+            user.set_password(password1)  # Encriptar la contraseña
+            user.save()
+            
+            login(request, user)
+            token = jwt.encode({'username': username}, 'secret_key', algorithm='HS256')
+            return JsonResponse({'token': token}, status=201)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        except Exception as e:
+            print(f"Error al registrar usuario: {e}")
+            return JsonResponse({'error': str(e)}, status=500)
+
+
+
+
+@api_view(['POST'])
+def signout(request):
+    if request.method == 'POST':
+        logout(request)
+        return JsonResponse({'message': 'User logged out successfully'})
+
 @csrf_exempt
 def discotecas_json(request):
     if request.method == 'GET':
@@ -26,7 +84,20 @@ def discotecas_json(request):
                 'direccion': discoteca.direccion,
                 'telefono': discoteca.telefono,
                 'descripcion': discoteca.descripcion,
-                'fecha_creacion': discoteca.fecha_creacion.strftime('%Y-%m-%d'),  # Formato de fecha
+                'fecha_creacion': discoteca.created_at.strftime('%Y-%m-%d'),  # Formato de fecha
+                'horario_apertura': discoteca.horario_apertura.strftime('%H:%M:%S'),
+                'horario_cierre': discoteca.horario_cierre.strftime('%H:%M:%S'),
+                'aforo_maximo': discoteca.aforo_maximo,
+                'stock_bebidas': discoteca.stock_bebidas,
+                'calificacion': float(discoteca.calificacion),
+                'imagen': discoteca.imagen,
+                'redes_sociales': json.loads(discoteca.redes_sociales) if discoteca.redes_sociales else {},
+                'precio_entrada': float(discoteca.precio_entrada) if discoteca.precio_entrada else None,
+                'latitud': float(discoteca.latitud) if discoteca.latitud else None,
+                'longitud': float(discoteca.longitud) if discoteca.longitud else None,
+                'servicios': discoteca.servicios,
+                'estado_abierta': discoteca.estado_abierta,
+                'promociones': discoteca.promociones
             })
         return JsonResponse({'discotecas': data})
     else:
@@ -45,6 +116,7 @@ def tasks_json(request):
                 'fecha_creacion': task.created_at.strftime('%Y-%m-%d'),  # Formato de fecha
                 'fecha_completado': task.datecompleted.strftime('%Y-%m-%d') if task.datecompleted else None,
                 'username': task.user.username,
+                'discoteca': task.discoteca.nombre,
             })
         return JsonResponse({'tasks': data})
     else:
@@ -53,31 +125,6 @@ def tasks_json(request):
 def home(request):
     form = UserCreationForm()
     return render(request, 'home.html', {})
-
-def signup(request):
-    if request.method == 'GET':
-        return render(request, 'signup.html', {
-            'form': UserCreationForm
-        })
-    else:
-        if request.POST['password1'] == request.POST['password2']:
-            # Registrando usuario
-            try:
-                user = User.objects.create_user(
-                    username=request.POST['username'], password=request.POST['password1'])
-                user.save()
-                login(request, user)
-                return redirect('tasks')
-
-            except:
-                return render(request, 'signup.html', {
-                    'form': UserCreationForm,
-                    "error": 'Username already exists'
-                })
-        return render(request, 'signup.html', {
-            'form': UserCreationForm,
-            "error": 'Password do not match'
-        })
 
 @login_required
 def tasks(request):
@@ -143,10 +190,16 @@ def create_discoteca(request):
                 new_discoteca.user = request.user
                 new_discoteca.save()
                 return redirect('discotecas')
-        except ValueError:
+            else:
+                print("Errores del formulario:", form.errors)
+                return render(request, 'create_discoteca.html', {
+                    'form': form,
+                    'error': 'Por favor, provee datos válidos'
+                })
+        except ValueError as e:
             return render(request, 'create_discoteca.html', {
                 'form': DiscotecaForm(),
-                'error': 'Por favor, provee datos válidos'
+                'error': f'Error al guardar la discoteca: {e}'
             })
 
 def discoteca_detail(request, discoteca_id):
@@ -172,24 +225,87 @@ def complete_discoteca(request, discoteca_id):
         messages.success(request, '¡La discoteca ha sido marcada como completada!')
         return redirect('discotecas')
 
-def signout(request):
-    logout(request)
-    return redirect('home')
 
-def signin(request):
-    if request.method == 'GET':
-        return render(request, 'signin.html', {
-            'form': AuthenticationForm
-        })
-    else:
-        user = authenticate(
-            request, username=request.POST['username'], password=request.POST['password'])
-        if user is None:
-            return render(request, 'signin.html', {
-                'form': AuthenticationForm,
-                'error': 'Username or password is incorrect'
-            })
-        else:
-            login(request, user)
-            next_url = request.GET.get('next', 'tasks')
-            return redirect(next_url)
+
+
+from rest_framework import viewsets
+from .models import Project, Discoteca, Reserva, Comentario, Evento, Favorito
+from .serializers import DiscotecaSerializer, ProjectSerializer, ReservaSerializer, ComentarioSerializer, EventoSerializer, FavoritoSerializer
+
+class DiscotecaViewSet_DRF(viewsets.ModelViewSet):
+    queryset = Discoteca.objects.all()
+    serializer_class = DiscotecaSerializer
+
+class ProjectViewSet_DRF(viewsets.ModelViewSet):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+class ReservaViewSet_DRF(viewsets.ModelViewSet):
+    queryset = Reserva.objects.all()
+    serializer_class = ReservaSerializer
+
+class ComentarioViewSet_DRF(viewsets.ModelViewSet):
+    queryset = Comentario.objects.all()
+    serializer_class = ComentarioSerializer
+
+class EventoViewSet_DRF(viewsets.ModelViewSet):
+    queryset = Evento.objects.all()
+    serializer_class = EventoSerializer
+
+class FavoritoViewSet_DRF(viewsets.ModelViewSet):
+    queryset = Favorito.objects.all()
+    serializer_class = FavoritoSerializer
+
+
+
+from rest_framework import generics
+from .models import Project, Discoteca, Reserva, Comentario, Evento, Favorito
+from .serializers import DiscotecaSerializer, ProjectSerializer, ReservaSerializer, ComentarioSerializer, EventoSerializer, FavoritoSerializer
+
+class DiscotecaListCreateGenericsDRF(generics.ListCreateAPIView):
+    queryset = Discoteca.objects.all()
+    serializer_class = DiscotecaSerializer
+
+class DiscotecaRetrieveUpdateDestroyGenericsDRF(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Discoteca.objects.all()
+    serializer_class = DiscotecaSerializer
+
+class ProjectListCreateGenericsDRF(generics.ListCreateAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+class ProjectRetrieveUpdateDestroyGenericsDRF(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+class ReservaListCreateGenericsDRF(generics.ListCreateAPIView):
+    queryset = Reserva.objects.all()
+    serializer_class = ReservaSerializer
+
+class ReservaRetrieveUpdateDestroyGenericsDRF(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Reserva.objects.all()
+    serializer_class = ReservaSerializer
+
+class ComentarioListCreateGenericsDRF(generics.ListCreateAPIView):
+    queryset = Comentario.objects.all()
+    serializer_class = ComentarioSerializer
+
+class ComentarioRetrieveUpdateDestroyGenericsDRF(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comentario.objects.all()
+    serializer_class = ComentarioSerializer
+
+class EventoListCreateGenericsDRF(generics.ListCreateAPIView):
+    queryset = Evento.objects.all()
+    serializer_class = EventoSerializer
+
+class EventoRetrieveUpdateDestroyGenericsDRF(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Evento.objects.all()
+    serializer_class = EventoSerializer
+
+class FavoritoListCreateGenericsDRF(generics.ListCreateAPIView):
+    queryset = Favorito.objects.all()
+    serializer_class = FavoritoSerializer
+
+class FavoritoRetrieveUpdateDestroyGenericsDRF(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Favorito.objects.all()
+    serializer_class = FavoritoSerializer
